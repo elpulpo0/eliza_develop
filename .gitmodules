@@ -1,3 +1,6 @@
 [submodule "characters"]
 	path = characters
 	url = https://github.com/elizaos/characters
+[submodule "packages/plugin-multiversx"]
+	path = packages/plugin-multiversx
+	url = https://github.com/elizaos-plugins/plugin-multiversx.git
