@@ -138,9 +138,6 @@ importers:
       '@elizaos-plugins/client-twitter':
         specifier: workspace:0.25.6-alpha.1
         version: link:../packages/client-twitter
-      '@elizaos-plugins/plugin-multiversx':
-        specifier: workspace:^
-        version: link:../packages/plugin-multiversx
       '@elizaos/client-direct':
         specifier: workspace:*
         version: link:../packages/client-direct
@@ -150,6 +147,9 @@ importers:
       '@elizaos/plugin-bootstrap':
         specifier: workspace:*
         version: link:../packages/plugin-bootstrap
+      '@elizaos/plugin-multiversx':
+        specifier: workspace:^
+        version: link:../packages/plugin-multiversx
       readline:
         specifier: 1.3.0
         version: 1.3.0
@@ -718,9 +718,6 @@ importers:
 
   packages/plugin-multiversx:
     dependencies:
-      '@elizaos/core':
-        specifier: workspace:^
-        version: link:../core
       '@multiversx/sdk-core':
         specifier: 13.15.0
         version: 13.15.0(bignumber.js@9.1.2)(protobufjs@7.4.0)
