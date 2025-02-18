@@ -43,6 +43,11 @@ RUN git submodule update --init --recursive
 # Install dependencies
 RUN pnpm install --no-frozen-lockfile
 
+# Ajouter @elizaos/core aux paquets spécifiques
+RUN pnpm add @elizaos/core@workspace:* --filter ./packages/client-twitter && \
+    pnpm add @elizaos/core@workspace:* --filter ./packages/plugin-multiversx && \
+    pnpm add @elizaos/core@workspace:* --filter ./packages/client-telegram
+
 # Build the project
 RUN pnpm run build
 
@@ -66,17 +71,12 @@ WORKDIR /app
 COPY --from=builder /app/package.json ./ 
 COPY --from=builder /app/pnpm-workspace.yaml ./ 
 COPY --from=builder /app/.npmrc ./ 
-COPY --from=builder /app/turbo.json ./ 
 COPY --from=builder /app/node_modules ./node_modules
 COPY --from=builder /app/agent ./agent
 COPY --from=builder /app/client ./client
-COPY --from=builder /app/lerna.json ./ 
 COPY --from=builder /app/packages ./packages 
 COPY --from=builder /app/scripts ./scripts 
 COPY --from=builder /app/characters ./characters
-
-# Install dependencies in the final image
-RUN pnpm install --frozen-lockfile
 
 # Expose necessary ports
 EXPOSE 3000 5173
