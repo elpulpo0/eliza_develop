@@ -37,11 +37,14 @@ WORKDIR /app
 # Copy application code
 COPY . .
 
+# Récupérer les submodules Git
+RUN git submodule update --init --recursive
+
 # Install dependencies
-RUN pnpm install
+RUN pnpm i --no-frozen-lockfile
 
 # Build the project
-RUN pnpm run build && pnpm prune --prod
+RUN pnpm run build
 
 # Final runtime image
 FROM node:23.3.0-slim
@@ -76,4 +79,4 @@ COPY --from=builder /app/characters ./characters
 EXPOSE 3000 5173
 
 # Command to start the application
-CMD ["sh", "-c", "pnpm start & pnpm start:client"]
+CMD ["sh", "-c", "pnpm start"]
