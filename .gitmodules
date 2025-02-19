@@ -10,3 +10,7 @@
 [submodule "packages/client-telegram"]
 	path = packages/client-telegram
 	url = https://github.com/elizaos-plugins/client-telegram.git
+[submodule "packages/plugin-tee"]
+	path = packages/plugin-tee
+	url = https://github.com/elpulpo0/plugin-tee.git
+	branch = multiversx

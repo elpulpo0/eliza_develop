@@ -2,11 +2,12 @@ import { Character, ModelProviderName } from "@elizaos/core";
 import TwitterClient from "@elizaos-plugins/client-twitter";
 import MultiversxPlugin from "@elizaos-plugins/plugin-multiversx"
 import TelegramClient from "@elizaos-plugins/client-telegram";
+import { teePlugin } from "@elizaos-plugins/plugin-tee";
 
 export const defaultCharacter: Character = {
     name: "Eliza",
     username: "eliza",
-    plugins: [TwitterClient, MultiversxPlugin, TelegramClient],
+    plugins: [TwitterClient, MultiversxPlugin, TelegramClient, teePlugin],
     modelProvider: ModelProviderName.OPENAI,
     settings: {
         secrets: {},
