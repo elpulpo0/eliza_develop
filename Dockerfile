@@ -40,10 +40,15 @@ COPY . .
 # Récupérer les submodules Git
 RUN git submodule update --remote --recursive
 
-# Ajouter @elizaos/core aux paquets spécifiques
+# Ajouter @elizaos/core aux paquets spécifiques AVANT l'installation globale
 RUN pnpm add @elizaos/core@workspace:* --filter ./packages/client-twitter && \
     pnpm add @elizaos/core@workspace:* --filter ./packages/plugin-multiversx && \
     pnpm add @elizaos/core@workspace:* --filter ./packages/client-telegram
+
+# Ajouter les autres dépendances pour 'agent' si nécessaire
+RUN pnpm add @elizaos-plugins/client-twitter@workspace:* --filter ./agent && \
+    pnpm add @elizaos-plugins/plugin-multiversx@workspace:* --filter ./agent && \
+    pnpm add @elizaos-plugins/client-telegram@workspace:* --filter ./agent
 
 # Install dependencies
 RUN pnpm install --no-frozen-lockfile
