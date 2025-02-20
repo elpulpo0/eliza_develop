@@ -77,11 +77,10 @@ COPY --from=builder /app/package.json ./
 COPY --from=builder /app/pnpm-workspace.yaml ./ 
 COPY --from=builder /app/.npmrc ./ 
 COPY --from=builder /app/node_modules ./node_modules
-COPY --from=builder /app/dist ./dist  # Ajout de `dist/` si nécessaire
 COPY --from=builder /app/agent ./agent
 COPY --from=builder /app/client ./client
-COPY --from=builder /app/packages ./packages
-COPY --from=builder /app/scripts ./scripts
+COPY --from=builder /app/packages ./packages 
+COPY --from=builder /app/scripts ./scripts 
 COPY --from=builder /app/characters ./characters
 
 # Exposer les ports nécessaires
