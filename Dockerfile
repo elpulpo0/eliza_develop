@@ -1,7 +1,7 @@
-# Use a specific Node.js version for better reproducibility
+# ----------- BUILD STAGE ----------- #
 FROM node:23.3.0-slim AS builder
 
-# Install pnpm globally and necessary build tools
+# Installer pnpm et les dépendances système nécessaires
 RUN npm install -g pnpm@9.15.4 && \
     apt-get update && \
     apt-get upgrade -y && \
@@ -24,18 +24,21 @@ RUN npm install -g pnpm@9.15.4 && \
     libpango1.0-dev \
     libgif-dev \
     openssl \
-    libssl-dev libsecret-1-dev && \
-    apt-get clean && \
-    rm -rf /var/lib/apt/lists/*
+    libssl-dev \
+    libsecret-1-dev && \
+    apt-get clean && rm -rf /var/lib/apt/lists/*
 
-# Set Python 3 as the default python
+# Définir Python 3 comme version par défaut
 RUN ln -sf /usr/bin/python3 /usr/bin/python
 
-# Set the working directory
+# Définir le répertoire de travail
 WORKDIR /app
 
-# Copy application code
+# Copier les fichiers nécessaires
 COPY . .
+
+# Mettre à jour les submodules avant d’installer les dépendances
+RUN git submodule update --init --recursive
 
 # Vérifier le contenu copié
 RUN ls -la /app
@@ -43,51 +46,38 @@ RUN ls -la /app
 # Vérifier que pnpm voit bien tous les packages du workspace
 RUN pnpm list --depth=-1
 
-# Installer toutes les dépendances du workspace
+# Installer les dépendances sans bloquer le fichier pnpm-lock.yaml
 RUN pnpm install --no-frozen-lockfile
 
-# Ajouter @elizaos/core aux paquets spécifiques
-RUN pnpm add @elizaos/core@workspace:* --filter ./packages/client-twitter && \
-    pnpm add @elizaos/core@workspace:* --filter ./packages/plugin-multiversx && \
-    pnpm add @elizaos/core@workspace:* --filter ./packages/client-telegram
-
-# Ajouter les autres dépendances pour 'agent' si nécessaire
-RUN pnpm add @elizaos-plugins/client-twitter@workspace:* --filter ./agent && \
-    pnpm add @elizaos-plugins/plugin-multiversx@workspace:* --filter ./agent && \
-    pnpm add @elizaos-plugins/client-telegram@workspace:* --filter ./agent
-
-# Build le projet
+# Build du projet
 RUN pnpm run build
 
-# Final runtime image
+# ----------- RUNTIME STAGE ----------- #
 FROM node:23.3.0-slim
 
-# Install runtime dependencies
+# Installer uniquement les dépendances runtime nécessaires
 RUN npm install -g pnpm@9.15.4 && \
     apt-get update && \
-    apt-get install -y \
-    git \
-    python3 \
-    ffmpeg && \
-    apt-get clean && \
-    rm -rf /var/lib/apt/lists/*
+    apt-get install -y git python3 ffmpeg && \
+    apt-get clean && rm -rf /var/lib/apt/lists/*
 
-# Set the working directory
+# Définir le répertoire de travail
 WORKDIR /app
 
-# Copy built artifacts and production dependencies from the builder stage
-COPY --from=builder /app/package.json ./ 
-COPY --from=builder /app/pnpm-workspace.yaml ./ 
-COPY --from=builder /app/.npmrc ./ 
+# Copier uniquement les fichiers nécessaires à l’exécution
+COPY --from=builder /app/package.json ./
+COPY --from=builder /app/pnpm-workspace.yaml ./
+COPY --from=builder /app/.npmrc ./
 COPY --from=builder /app/node_modules ./node_modules
+COPY --from=builder /app/dist ./dist  # Ajout de `dist/` si nécessaire
 COPY --from=builder /app/agent ./agent
 COPY --from=builder /app/client ./client
-COPY --from=builder /app/packages ./packages 
-COPY --from=builder /app/scripts ./scripts 
+COPY --from=builder /app/packages ./packages
+COPY --from=builder /app/scripts ./scripts
 COPY --from=builder /app/characters ./characters
 
-# Expose necessary ports
+# Exposer les ports nécessaires
 EXPOSE 3000 5173
 
-# Command to start the application
-CMD ["sh", "-c", "pnpm start"]
+# Utiliser un ENTRYPOINT plus propre pour éviter les problèmes de PID
+ENTRYPOINT ["pnpm", "start"]
