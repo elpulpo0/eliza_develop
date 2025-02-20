@@ -37,10 +37,16 @@ WORKDIR /app
 # Copy application code
 COPY . .
 
-# Récupérer les submodules Git
-RUN git submodule update --remote --recursive
+# Vérifier le contenu copié
+RUN ls -la /app
 
-# Ajouter @elizaos/core aux paquets spécifiques AVANT l'installation globale
+# Vérifier que pnpm voit bien tous les packages du workspace
+RUN pnpm list --depth=-1
+
+# Installer toutes les dépendances du workspace
+RUN pnpm install --no-frozen-lockfile
+
+# Ajouter @elizaos/core aux paquets spécifiques
 RUN pnpm add @elizaos/core@workspace:* --filter ./packages/client-twitter && \
     pnpm add @elizaos/core@workspace:* --filter ./packages/plugin-multiversx && \
     pnpm add @elizaos/core@workspace:* --filter ./packages/client-telegram
@@ -50,10 +56,7 @@ RUN pnpm add @elizaos-plugins/client-twitter@workspace:* --filter ./agent && \
     pnpm add @elizaos-plugins/plugin-multiversx@workspace:* --filter ./agent && \
     pnpm add @elizaos-plugins/client-telegram@workspace:* --filter ./agent
 
-# Install dependencies
-RUN pnpm install --no-frozen-lockfile
-
-# Build the project
+# Build le projet
 RUN pnpm run build
 
 # Final runtime image
