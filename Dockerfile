@@ -40,13 +40,13 @@ COPY . .
 # Récupérer les submodules Git
 RUN git submodule update --remote --recursive
 
-# Install dependencies
-RUN pnpm install --no-frozen-lockfile
-
 # Ajouter @elizaos/core aux paquets spécifiques
 RUN pnpm add @elizaos/core@workspace:* --filter ./packages/client-twitter && \
     pnpm add @elizaos/core@workspace:* --filter ./packages/plugin-multiversx && \
     pnpm add @elizaos/core@workspace:* --filter ./packages/client-telegram
+
+# Install dependencies
+RUN pnpm install --no-frozen-lockfile
 
 # Build the project
 RUN pnpm run build
