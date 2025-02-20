@@ -38,7 +38,7 @@ WORKDIR /app
 COPY . .
 
 # Récupérer les submodules Git
-RUN git submodule update --init --recursive
+RUN git submodule update --remote --recursive
 
 # Install dependencies
 RUN pnpm install --no-frozen-lockfile

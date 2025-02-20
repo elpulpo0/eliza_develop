@@ -1,6 +1,6 @@
 import { Character, ModelProviderName } from "@elizaos/core";
 import TwitterClient from "@elizaos-plugins/client-twitter";
-import MultiversxPlugin from "@elizaos/plugin-multiversx"
+import MultiversxPlugin from "@elizaos-plugins/plugin-multiversx"
 import TelegramClient from "@elizaos-plugins/client-telegram";
 
 export const kwakAgentCharacters: Character = {
