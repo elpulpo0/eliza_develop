@@ -49,6 +49,14 @@ RUN pnpm list --depth=-1
 # Installer les dépendances sans bloquer le fichier pnpm-lock.yaml
 RUN pnpm install --no-frozen-lockfile
 
+# Installer explicitement les modules supplémentaires nécessaires
+RUN pnpm add @elizaos-plugins/client-twitter@workspace:* --filter ./agent
+RUN pnpm add @elizaos-plugins/plugin-multiversx@workspace:* --filter ./agent
+RUN pnpm add @elizaos-plugins/client-telegram@workspace:* --filter ./agent
+RUN pnpm add @elizaos/core@workspace:* --filter ./packages/client-twitter
+RUN pnpm add @elizaos/core@workspace:* --filter ./packages/plugin-multiversx
+RUN pnpm add @elizaos/core@workspace:* --filter ./packages/client-telegram
+
 # Build du projet
 RUN pnpm run build
 
@@ -65,9 +73,9 @@ RUN npm install -g pnpm@9.15.4 && \
 WORKDIR /app
 
 # Copier uniquement les fichiers nécessaires à l’exécution
-COPY --from=builder /app/package.json ./
-COPY --from=builder /app/pnpm-workspace.yaml ./
-COPY --from=builder /app/.npmrc ./
+COPY --from=builder /app/package.json ./ 
+COPY --from=builder /app/pnpm-workspace.yaml ./ 
+COPY --from=builder /app/.npmrc ./ 
 COPY --from=builder /app/node_modules ./node_modules
 COPY --from=builder /app/dist ./dist  # Ajout de `dist/` si nécessaire
 COPY --from=builder /app/agent ./agent
