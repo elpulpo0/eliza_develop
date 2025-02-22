@@ -1,7 +1,7 @@
 services:
-  kwakagent42v2:
+  kwakagent42:
     image: "${DOCKER_IMAGE}"
-    container_name: kwakagent42v2
+    container_name: kwakagent42
     restart: always
     env_file:
       - .env
