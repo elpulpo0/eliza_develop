@@ -83,6 +83,10 @@ COPY --from=builder /app/packages ./packages
 COPY --from=builder /app/scripts ./scripts 
 COPY --from=builder /app/characters ./characters
 
+# Créer un utilisateur non-root et changer le propriétaire des fichiers
+RUN useradd -ms /bin/bash appuser && chown -R appuser /app
+USER appuser
+
 # Exposer les ports nécessaires
 EXPOSE 3000 5173
 
