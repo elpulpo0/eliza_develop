@@ -51,7 +51,7 @@ RUN pnpm install --no-frozen-lockfile
 
 # Installer explicitement les modules supplémentaires nécessaires
 RUN pnpm add @elizaos-plugins/client-twitter@workspace:* --filter ./agent
-RUN pnpm add @elizaos-plugins/plugin-multiversx@workspace:* --filter ./agent
+RUN pnpm add @elizaos-plugins/plugin-multiversx@github:elpulpo0/plugin-multiversx#AI_MegaWave_Hackathon --filter ./agent
 RUN pnpm add @elizaos-plugins/client-telegram@workspace:* --filter ./agent
 RUN pnpm add @elizaos/core@workspace:* --filter ./packages/client-twitter
 RUN pnpm add @elizaos/core@workspace:* --filter ./packages/plugin-multiversx
