@@ -1,12 +1,13 @@
 [submodule "characters"]
 	path = characters
 	url = https://github.com/elizaos/characters
-[submodule "packages/plugin-multiversx"]
-	path = packages/plugin-multiversx
-	url = https://github.com/elizaos-plugins/plugin-multiversx.git
 [submodule "packages/client-twitter"]
 	path = packages/client-twitter
 	url = https://github.com/elizaos-plugins/client-twitter.git
 [submodule "packages/client-telegram"]
 	path = packages/client-telegram
 	url = https://github.com/elizaos-plugins/client-telegram.git
+[submodule "packages/plugin-multiversx"]
+	path = packages/plugin-multiversx
+	url = https://github.com/elpulpo0/plugin-multiversx.git
+	branch = AI_MegaWave_Hackathon
