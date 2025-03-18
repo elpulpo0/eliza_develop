@@ -72,15 +72,8 @@ RUN npm install -g pnpm@9.15.4 && \
 # Définir le répertoire de travail
 WORKDIR /app
 
-# Copier uniquement les fichiers nécessaires à l’exécution
-COPY --from=builder /app/package.json ./ 
-COPY --from=builder /app/pnpm-workspace.yaml ./ 
-COPY --from=builder /app/.npmrc ./ 
-COPY --from=builder /app/node_modules ./node_modules
-COPY --from=builder /app/agent ./agent
-COPY --from=builder /app/client ./client
-COPY --from=builder /app/packages ./packages 
-COPY --from=builder /app/scripts ./scripts 
+# Copier les fichiers nécessaires
+COPY . .
 
 # Créer un utilisateur non-root et changer le propriétaire des fichiers
 RUN useradd -ms /bin/bash appuser && chown -R appuser /app
