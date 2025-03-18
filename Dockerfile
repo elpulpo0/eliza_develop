@@ -1,4 +1,4 @@
-FROM node:20.17-slim
+FROM node:23.3.0-slim
 
 # Installer pnpm et les dépendances système nécessaires
 RUN npm install -g pnpm@9.15.4 && \
