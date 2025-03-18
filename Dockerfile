@@ -36,6 +36,9 @@ WORKDIR /app
 # Copier les fichiers nécessaires
 COPY . .
 
+# Mettre à jour les submodules avant d’installer les dépendances
+RUN git submodule update --init --recursive
+
 # Installer les dépendances sans bloquer le fichier pnpm-lock.yaml
 RUN pnpm install --no-frozen-lockfile
 
