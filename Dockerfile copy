@@ -1,4 +1,5 @@
-FROM node:20.17-slim
+# ----------- BUILD STAGE ----------- #
+FROM node:23.3.0-slim AS builder
 
 # Installer pnpm et les dépendances système nécessaires
 RUN npm install -g pnpm@9.15.4 && \
@@ -36,6 +37,15 @@ WORKDIR /app
 # Copier les fichiers nécessaires
 COPY . .
 
+# Mettre à jour les submodules avant d’installer les dépendances
+RUN git submodule update --init --recursive
+
+# Vérifier le contenu copié
+RUN ls -la /app
+
+# Vérifier que pnpm voit bien tous les packages du workspace
+RUN pnpm list --depth=-1
+
 # Installer les dépendances sans bloquer le fichier pnpm-lock.yaml
 RUN pnpm install --no-frozen-lockfile
 
@@ -49,6 +59,25 @@ RUN pnpm add @elizaos/core@workspace:* --filter ./packages/client-telegram
 
 # Build du projet
 RUN pnpm run build
+
+# ----------- RUNTIME STAGE ----------- #
+FROM node:23.3.0-slim
+
+# Installer uniquement les dépendances runtime nécessaires
+RUN npm install -g pnpm@9.15.4 && \
+    apt-get update && \
+    apt-get install -y git python3 ffmpeg && \
+    apt-get clean && rm -rf /var/lib/apt/lists/*
+
+# Définir le répertoire de travail
+WORKDIR /app
+
+# Copier les fichiers nécessaires
+COPY . .
+
+# Créer un utilisateur non-root et changer le propriétaire des fichiers
+RUN useradd -ms /bin/bash appuser && chown -R appuser /app
+USER appuser
 
 # Exposer les ports nécessaires
 EXPOSE 3000 5173
