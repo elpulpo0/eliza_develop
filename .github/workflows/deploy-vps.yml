@@ -4,10 +4,12 @@ on:
   push:
     branches:
       - kwakagent
+      - kwak+laika
       - none
   pull_request:
     branches:
       - kwakagent
+      - kwak+laika
       - none
 jobs:
   build-and-deploy:

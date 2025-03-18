@@ -8,7 +8,16 @@ export const kwakAgentCharacters: Character = {
     username: "kwakagent42",
     modelProvider: ModelProviderName.OPENAI,
     settings: {
-        secrets: {},
+        secrets: {
+            TELEGRAM_BOT_TOKEN:process.env.TELEGRAM_BOT_TOKEN_KWAK,
+            MVX_PRIVATE_KEY:process.env.MVX_PRIVATE_KEY_KWAK,
+            TWITTER_USERNAME:process.env.TWITTER_USERNAME_KWAK,
+            TWITTER_USER_ID:process.env.TWITTER_USER_ID_KWAK,
+            TWITTER_PASSWORD:process.env.TWITTER_PASSWORD_KWAK,
+            TWITTER_EMAIL:process.env.TWITTER_EMAIL_KWAK,
+            ACCESS_TOKEN_MANAGEMENT_TO:process.env.ACCESS_TOKEN_MANAGEMENT_TO_KWAK,
+            TWITTER_TARGET_USERS:process.env.TWITTER_TARGET_USERS_KWAK
+        },
         voice: {
             model: "",
         },
