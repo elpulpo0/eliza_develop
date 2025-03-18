@@ -1,15 +1,15 @@
-name: Deploy Kwak Agent 42
+name: Deploy Kwak Agent 42 and Laïka on VPS
 
 on:
   push:
     branches:
       - kwakagent
-      - kwak+laika
+      - test_multiple_agents
       - none
   pull_request:
     branches:
       - kwakagent
-      - kwak+laika
+      - test_multiple_agents
       - none
 jobs:
   build-and-deploy:
