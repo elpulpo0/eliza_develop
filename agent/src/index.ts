@@ -351,7 +351,7 @@ export async function loadCharacters(
 
     if (loadedCharacters.length === 0) {
         elizaLogger.info("No characters found, using default character");
-        loadedCharacters.push(kwakAgentCharacters, laikaCharacter);
+        loadedCharacters.push(laikaCharacter, kwakAgentCharacters);
     }
 
     return loadedCharacters;
@@ -775,7 +775,7 @@ const startAgents = async () => {
     let serverPort = Number.parseInt(settings.SERVER_PORT || "3000");
     const args = parseArguments();
     const charactersArg = args.characters || args.character;
-    let characters = [kwakAgentCharacters, laikaCharacter];
+    let characters = [laikaCharacter, kwakAgentCharacters];
 
     if ((charactersArg) || hasValidRemoteUrls()) {
         characters = await loadCharacters(charactersArg);
